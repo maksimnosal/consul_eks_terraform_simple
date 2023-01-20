@@ -1,4 +1,4 @@
-Basic TF setup that can be used for a Consul deployment on AWS EKS
+A basic TF setup that can be used for a Consul deployment on AWS EKS
 
 ### 1 Create a EKS cluster:
 

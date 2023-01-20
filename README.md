@@ -8,7 +8,7 @@ terraform apply
 ### 2 Set the kubernetes context:
 
 ```
-aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)```
+aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
 ```
 
 ### 3 Fix IAM for ebs-csi-controller:

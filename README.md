@@ -21,5 +21,5 @@ kubectl rollout restart deployment ebs-csi-controller -n kube-system
 ### 4 Install Consul:
 
 ```
-helm install consul hashicorp/consul --values consul_values.yaml -n consul --create-namespace
+helm install consul hashicorp/consul -n consul --create-namespace
 ```

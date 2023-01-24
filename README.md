@@ -1,5 +1,8 @@
 A basic TF setup that can be used for a Consul deployment on AWS EKS (EC2)
 
+### WARNING! Looks like there is an issue with ```connect-inject``` which is not addressed in the proposed config. Working on fixing it.
+
+## Steps
 ### 1 Create a EKS cluster:
 
 ```

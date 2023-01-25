@@ -20,7 +20,7 @@ kubectl create namespace consul
 kubectl apply --kustomize "github.com/hashicorp/consul-api-gateway/config/crd?ref=v0.4.0"
 helm install consul hashicorp/consul --values consul_values.yaml -n consul  --version=0.49.0
 ```
-### 5) Deploy NGINX with API GW
+### 5) Deploy NGINX inside Service Mesh with API GW as an entry point
 ```
 kubectl apply -f nginx-deployment.yaml 
 ```

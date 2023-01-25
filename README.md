@@ -40,7 +40,7 @@ a7a252c22eabc4ab8960e12767cbb2b6-1319286787.eu-north-1.elb.amazonaws.com:30080
 
 ### Troubleshooting
 
-If Consul UI shows '0 upstreams' for ```nginx-apigw``` service it can be resolved by re-creating the ```httproute```:
+If Consul UI shows ```0 upstreams``` for ```nginx-apigw``` service it can be resolved by re-creating the ```httproute```:
 ```
 kubectl delete httproute -n nginx nginx-http-route-1 
 kubectl apply -f nginx-deployment.yaml 

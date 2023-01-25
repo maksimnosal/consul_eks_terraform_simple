@@ -26,6 +26,13 @@ kubectl apply -f nginx-deployment.yaml
 ```
 ### 6) You might want to limit access to the ELB IP to your IP (it's allowed to 0.0.0.0 by default)
 
+In order to find out the ELB FQDNs you can use the following command:
+```
+aws elb describe-load-balancers --query 'LoadBalancerDescriptions[].[DNSName, ListenerDescriptions[0].Listener.LoadBalancerPort]' --output=text | awk '{print $1":"$2}'
+a4f1f722e0c7f4fed8721bafce454d08-1478636051.eu-north-1.elb.amazonaws.com:443
+a7a252c22eabc4ab8960e12767cbb2b6-1319286787.eu-north-1.elb.amazonaws.com:30080
+```
+
 ### Troubleshooting
 
 If Consul UI shows '0 upstreams' for ```nginx-apigw``` service it can be resolved by re-creating the ```httproute```:

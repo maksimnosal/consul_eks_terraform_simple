@@ -42,12 +42,22 @@ module "eks" {
     }
   }
 }
+resource "aws_security_group_rule" "eks_nodes_ingress" {
+  description = "From the Cluster SG to the Nodes SG"
+  type = "ingress"
+  source_security_group_id = module.eks.cluster_security_group_id
+  from_port = 1025
+  to_port = 10000
+  security_group_id = module.eks.node_security_group_id
+  protocol = "tcp"
+}
+
 # creates IAM role for ebs-csi-controller and assigns AmazonEBSCSIDriverPolicy policy to it
-module "iam_eks_role" {
+module "ebs-csi-controller_role" {
   
   source = "terraform-aws-modules/iam/aws//modules/iam-eks-role"
 
-  role_name = "${var.ebs-csi-controller-role-name}"
+  role_name = "${var.eks_cluster_name}ebs-csi-controller-role"
 
   cluster_service_accounts = {
     (module.eks.cluster_name) = ["kube-system:ebs-csi-controller-sa"]

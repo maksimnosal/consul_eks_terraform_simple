@@ -1,30 +1,26 @@
-A basic TF setup that can be used for a Consul deployment on AWS EKS (EC2)
+The lab setup for experimenting with Consul Connect CA on AWS EKS (EC2)
 
-### WARNING! Looks like there is an issue with ```connect-inject``` which is not addressed in the proposed config. Working on fixing it.
-
-## Steps
-### 1 Create a EKS cluster:
-
+### 1) Create a EKS cluster:
 ```
 terraform plan
 terraform apply
 ```
-
-### 2 Set the kubernetes context:
-
+### 2) Set the kubernetes context:
 ```
 aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
 ```
-
-### 3 Fix IAM for ebs-csi-controller:
-
+### 3) Fix IAM for ebs-csi-controller:
 ```
 kubectl annotate serviceaccount ebs-csi-controller-sa -n kube-system eks.amazonaws.com/role-arn=$(terraform output -raw iam_ebs-csi-controller_role)
 kubectl rollout restart deployment ebs-csi-controller -n kube-system
 ```
-
-### 4 Install Consul:
-
+### 4) Install Consul:
 ```
-helm install consul hashicorp/consul -n consul --create-namespace
+kubectl create namespace consul
+kubectl apply --kustomize "github.com/hashicorp/consul-api-gateway/config/crd?ref=v0.4.0"
+helm install consul hashicorp/consul --values consul_values.yaml -n consul  --version=0.49.0
+```
+### 5) Deploy NGINX with API GW
+```
+kubectl apply -f nginx-deployment.yaml 
 ```

@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nginx-gateway-demo
+  namespace: nginx
+  labels:
+    my-label: nginx-gateway-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-gateway-demo
+  namespace: nginx
+  labels:
+    my-label: nginx-gateway-demo
+spec:
+  selector:
+    matchLabels:
+      app: nginx-gateway-demo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-gateway-demo
+      annotations:
+        consul.hashicorp.com/connect-inject: "true"
+        consul.hashicorp.com/enable-metrics-merging: "false"
+        consul.hashicorp.com/envoy-extra-args: '--log-level debug'
+        consul.hashicorp.com/transparent-proxy: 'false'
+    spec:
+      serviceAccountName: nginx-gateway-demo
+      containers:
+      - name: nginx
+        image: nginxdemos/hello:0.3
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-gateway-demo
+  namespace: nginx
+  labels:
+    my-label: nginx-gateway-demo
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx-gateway-demo
+  ports:
+    - port: 80
+      targetPort: 80
+
+---
+
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceDefaults
+metadata:
+  name: nginx-gateway-demo
+spec:
+  protocol: http
+
+---
+
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: nginx-apigw
+  namespace: nginx
+spec:
+  gatewayClassName: consul-api-gateway
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 30080
+    allowedRoutes:
+      namespaces:
+        from: All
+
+---
+
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: nginx-http-route-1
+  namespace: nginx
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: nginx-apigw
+      namespace: nginx
+  rules:
+    - backendRefs:
+      - kind: Service
+        name: nginx-gateway-demo
+        namespace: nginx
+        port: 80
+        weight: 1
+      matches:
+      - path:
+          type: PathPrefix
+          value: /

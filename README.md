@@ -24,7 +24,6 @@ helm install consul hashicorp/consul --values consul_values.yaml -n consul  --ve
 ```
 kubectl apply -f nginx-deployment.yaml 
 ```
-### 6) You might want to limit access to the ELB IP to your IP (it's allowed to 0.0.0.0 by default)
 
 In order to find out the ELB FQDNs you can use the following command:
 ```
@@ -35,6 +34,9 @@ Output example:
 a4f1f722e0c7f4fed8721bafce454d08-1478636051.eu-north-1.elb.amazonaws.com:443
 a7a252c22eabc4ab8960e12767cbb2b6-1319286787.eu-north-1.elb.amazonaws.com:30080
 ```
+```443``` port is for Consul UI; ```30080``` port for NGINX
+
+### WARNING! By default SGs assigned to the created ELBs allow incoming connections from ANY address. You might want to limit it to your own IP
 
 ### Troubleshooting
 

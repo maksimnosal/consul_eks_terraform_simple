@@ -24,3 +24,12 @@ helm install consul hashicorp/consul --values consul_values.yaml -n consul  --ve
 ```
 kubectl apply -f nginx-deployment.yaml 
 ```
+### 6) You might want to limit access to the ELB IP to your IP (it's allowed to 0.0.0.0 by default)
+
+### Troubleshooting
+
+If Consul UI shows '0 upstreams' for ```nginx-apigw``` service it can be resolved by re-creating the ```httproute```:
+```
+kubectl delete httproute -n nginx nginx-http-route-1 
+kubectl apply -f nginx-deployment.yaml 
+```

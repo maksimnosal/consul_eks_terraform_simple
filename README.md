@@ -31,7 +31,7 @@ kubectl apply -f nginx-deployment.yaml
 
 In order to find out the ELB FQDNs you can use the following command:
 ```
-aws elb describe-load-balancers --query 'LoadBalancerDescriptions[].[DNSName, ListenerDescriptions[0].Listener.LoadBalancerPort]' --output=text | awk '{print $1":"$2}'
+aws elb describe-load-balancers --region $(terraform output -raw region) --query 'LoadBalancerDescriptions[].[DNSName, ListenerDescriptions[0].Listener.LoadBalancerPort]' --output=text | awk '{print $1":"$2}'
 ```
 Output example:
 ```

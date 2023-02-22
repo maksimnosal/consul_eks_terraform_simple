@@ -4,7 +4,7 @@ The lab setup for experimenting with Consul Connect on AWS EKS (EC2)
 ```
 aws sts get-caller-identity
 ```
-### 2) Create a EKS cluster:
+### 2) Create an EKS cluster:
 ```
 terraform plan
 terraform apply

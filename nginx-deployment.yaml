@@ -29,8 +29,6 @@ spec:
         app: nginx-gateway-demo
       annotations:
         consul.hashicorp.com/connect-inject: "true"
-        consul.hashicorp.com/enable-metrics-merging: "false"
-        consul.hashicorp.com/envoy-extra-args: '--log-level debug'
         consul.hashicorp.com/transparent-proxy: 'false'
     spec:
       serviceAccountName: nginx-gateway-demo

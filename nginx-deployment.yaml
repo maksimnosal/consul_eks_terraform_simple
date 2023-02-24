@@ -59,6 +59,7 @@ apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
   name: nginx-gateway-demo
+  namespace: nginx
 spec:
   protocol: http
 

@@ -22,7 +22,7 @@ kubectl rollout restart deployment ebs-csi-controller -n kube-system
 ```
 kubectl create namespace consul
 kubectl apply --kustomize "github.com/hashicorp/consul-api-gateway/config/crd?ref=v0.4.0"
-helm install consul hashicorp/consul --values consul_values.yaml -n consul  --version=0.49.0
+helm install consul hashicorp/consul --values consul_values.yaml -n consul --version=0.49.0
 ```
 ### 6) Deploy NGINX inside Service Mesh with API GW as an entry point
 ```
@@ -48,4 +48,10 @@ If Consul UI shows ```0 upstreams``` for ```nginx-apigw``` service it can be res
 ```
 kubectl delete httproute -n nginx nginx-http-route-1 
 kubectl apply -f nginx-deployment.yaml 
+```
+### 7) Removal of the setup:
+```
+kubectl delete -f nginx-deployment.yaml
+helm uninstall consul -n consul
+terraform destroy
 ```

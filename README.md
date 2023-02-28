@@ -49,7 +49,7 @@ If Consul UI shows ```0 upstreams``` for ```nginx-apigw``` service it can be res
 kubectl delete httproute -n nginx nginx-http-route-1 
 kubectl apply -f nginx-deployment.yaml 
 ```
-### 7) Removal of the setup:
+### 7) Remove the setup:
 ```
 kubectl delete -f nginx-deployment.yaml
 helm uninstall consul -n consul
